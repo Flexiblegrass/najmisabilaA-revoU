@@ -1,0 +1,236 @@
+/* ================================================================
+   style.css — Expense & Budget Tracker
+   TC-1: Only 1 CSS file (this file)
+   TC-3: Targets modern browsers (Chrome, Firefox, Edge, Safari)
+================================================================ */
+
+
+/* ----------------------------------------------------------------
+   1. CSS RESET / BASE
+      - Remove default margin/padding
+      - Set box-sizing globally
+      - Base font and color tokens
+---------------------------------------------------------------- */
+
+* {
+  /* TODO: reset margin, padding, box-sizing */
+}
+
+:root {
+  /* TODO: Define your color palette as CSS variables
+     Example:
+     --color-primary: #...;
+     --color-danger:  #...;
+     --color-bg:      #...;
+     --color-surface: #...;
+     --color-text:    #...;
+  */
+
+  /* TODO: Define typography tokens
+     --font-base: ...;
+     --font-size-sm: ...;
+     --font-size-md: ...;
+     --font-size-lg: ...;
+  */
+
+  /* TODO: Define spacing tokens
+     --space-xs: ...;
+     --space-sm: ...;
+     --space-md: ...;
+     --space-lg: ...;
+  */
+
+  /* TODO: Define border-radius tokens
+     --radius-sm: ...;
+     --radius-md: ...;
+  */
+}
+
+body {
+  /* TODO: Apply font, background color, text color */
+  /* TODO: Set a max-width and center horizontally for desktop */
+}
+
+
+/* ----------------------------------------------------------------
+   2. HEADER
+      - App title styling
+      - Optional: sticky header for mobile
+---------------------------------------------------------------- */
+
+#app-header {
+  /* TODO */
+}
+
+#app-header h1 {
+  /* TODO */
+}
+
+
+/* ----------------------------------------------------------------
+   3. MAIN LAYOUT
+      - Stack sections vertically on mobile
+      - Optional: grid/flex layout for wider screens
+---------------------------------------------------------------- */
+
+#app-main {
+  /* TODO: padding, display, gap */
+}
+
+
+/* ----------------------------------------------------------------
+   4. SUMMARY CARDS  (#summary-section)
+      - Flexbox row of 3 cards
+      - Responsive: wrap or scroll on small screens
+---------------------------------------------------------------- */
+
+#summary-section {
+  /* TODO: display flex, gap, justify-content */
+}
+
+.card {
+  /* TODO: background, padding, border-radius, flex sizing */
+}
+
+.card-label {
+  /* TODO: font-size, color, display */
+}
+
+.card-value {
+  /* TODO: font-size, font-weight, color */
+}
+
+
+/* ----------------------------------------------------------------
+   5. CHART SECTION  (#chart-section)
+      - Center the canvas / progress bar
+      - Responsive sizing
+---------------------------------------------------------------- */
+
+#chart-section {
+  /* TODO */
+}
+
+#budget-chart {
+  /* TODO: max-width, display block, margin auto */
+}
+
+/* Optional CSS progress bar styles
+.progress-bar-track { }
+.progress-bar-fill  { }
+*/
+
+
+/* ----------------------------------------------------------------
+   6. FORM STYLES  (#expense-form, #budget-form)
+      - Form group layout (label + input stacked)
+      - Input / select styling
+      - Submit button styling
+---------------------------------------------------------------- */
+
+#form-section,
+#budget-section {
+  /* TODO: background, padding, border-radius */
+}
+
+.form-group {
+  /* TODO: display flex column, gap, margin-bottom */
+}
+
+.form-group label {
+  /* TODO: font-weight, font-size */
+}
+
+.form-group input,
+.form-group select {
+  /* TODO: padding, border, border-radius, font-size, width 100% */
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  /* TODO: outline, border-color */
+}
+
+button[type="submit"] {
+  /* TODO: background, color, padding, border, border-radius, cursor, width */
+}
+
+button[type="submit"]:hover {
+  /* TODO: hover state */
+}
+
+
+/* ----------------------------------------------------------------
+   7. EXPENSE LIST  (#list-section)
+      - List reset (no bullets)
+      - Individual list item layout
+      - Delete button styling
+---------------------------------------------------------------- */
+
+#list-section {
+  /* TODO */
+}
+
+#expense-list {
+  /* TODO: list-style none, padding 0, margin 0 */
+}
+
+#expense-list li {
+  /* TODO: display flex, justify-content space-between, align-items center */
+  /* TODO: padding, border-bottom, gap */
+}
+
+.expense-info {
+  /* TODO: flex grow, text details */
+}
+
+.expense-amount {
+  /* TODO: font-weight, color */
+}
+
+.btn-delete {
+  /* TODO: background, color, border, cursor, padding, border-radius */
+}
+
+.btn-delete:hover {
+  /* TODO: hover state */
+}
+
+
+/* ----------------------------------------------------------------
+   8. EMPTY STATE
+      - Centered message when list is empty
+---------------------------------------------------------------- */
+
+#empty-state {
+  /* TODO: text-align center, color, font-size, padding */
+}
+
+.hidden {
+  display: none;
+}
+
+
+/* ----------------------------------------------------------------
+   9. FOOTER
+---------------------------------------------------------------- */
+
+#app-footer {
+  /* TODO */
+}
+
+
+/* ----------------------------------------------------------------
+   10. RESPONSIVE — MOBILE FIRST
+       Adjust layouts for larger screens using min-width breakpoints
+---------------------------------------------------------------- */
+
+/* Tablet: 600px and up */
+@media (min-width: 600px) {
+  /* TODO: e.g. side-by-side form and chart */
+}
+
+/* Desktop: 900px and up */
+@media (min-width: 900px) {
+  /* TODO: e.g. wider max-width, multi-column layout */
+}
