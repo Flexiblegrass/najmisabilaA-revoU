@@ -4,7 +4,7 @@
 **Batch: 3 August 2026**
 
 Name : Najmi Sabila Almusfiroh
-Github Repository : https://github.com/Flexiblegrass/najmisabilaA-revoU.git
+Github Repository : https://github.com/Flexiblegrass/CodingCamp-3August26-NajmiSabilaA.git
 
 ## About
 
