@@ -75,7 +75,7 @@ App
 │   ├── Tab: Laporan  (#tab-laporan)
 │   │   ├── PeriodTabGroup  — 3 × <button class="period-tab">
 │   │   ├── h2#laporan-period-label
-│   │   ├── canvas#pie-chart  — donut chart (Canvas 2D)
+│   │   ├── canvas#pie-chart  — pie chart (Canvas 2D)
 │   │   └── ul#category-legend
 │   ├── Tab: Riwayat  (#tab-riwayat)
 │   │   ├── SearchInput  — live-filter input
@@ -103,7 +103,7 @@ App
 | `renderDompet()` | Compute display balances, rebuild `#wallet-list` |
 | `renderLaporan()` | Filter expenses by period, draw pie chart, build legend |
 | `renderRiwayat(query)` | Group transactions by date, apply search filter, build collapsible list |
-| `drawPieChart(canvas, cats, colorMap, total)` | Draw arc slices + donut hole using Canvas 2D |
+| `drawPieChart(canvas, cats, colorMap, total)` | Draw arc slices with white dividers using Canvas 2D |
 | `openTransactionModal(txId)` | Pre-fill form for edit or clear for new; show overlay |
 | `saveTransaction()` | Validate, persist, close modal, re-render, show toast |
 | `deleteTransaction(txId)` | Remove from state, persist, re-render, show toast |
@@ -204,10 +204,9 @@ up the active language. On language change, `applyTranslations()` walks all
 ### Pie chart with Canvas API only
 
 No Chart.js or any external charting library is used. `drawPieChart()` uses the Canvas 2D
-context to draw arc slices proportional to each category's share of total expenses, then
-paints a white circle at the centre (radius × 0.5) to create the donut appearance. Colours
-are drawn from a fixed 10-entry `CATEGORY_COLORS` array, cycling if there are more than
-10 categories.
+context to draw arc slices proportional to each category's share of total expenses, with
+white stroke dividers between slices for visual clarity. Colours are drawn from a fixed
+10-entry `CATEGORY_COLORS` array, cycling if there are more than 10 categories.
 
 ### Category datalist
 

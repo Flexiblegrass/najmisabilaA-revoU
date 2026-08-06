@@ -105,7 +105,7 @@ All tasks are marked complete.
     - _Requirements: 4.2_
   - [x] 8.3 Implement `renderLaporan()` — period button toggle, canvas show/hide, empty state, legend rebuild
     - _Requirements: 4.1, 4.2, 4.4, 4.5, 4.6_
-  - [x] 8.4 Implement `drawPieChart(canvas, cats, colorMap, total)` — arc slices + white donut hole via Canvas 2D API
+  - [x] 8.4 Implement `drawPieChart(canvas, cats, colorMap, total)` — arc slices with white dividers via Canvas 2D API
     - _Requirements: 4.3, 4.6_
 
 - [x] 9. JavaScript — Riwayat tab

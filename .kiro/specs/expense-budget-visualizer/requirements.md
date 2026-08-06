@@ -77,7 +77,7 @@ No build step, no bundler, and no backend server is required.
 
 1. THE App SHALL provide three period filter buttons: Harian (today), Bulanan (current month), and Tahunan (current year)
 2. WHEN a period is selected, THE App SHALL display a human-readable period label (e.g. "Kamis, 6 Agustus 2026" for daily, "1 – 31 Agustus 2026" for monthly, "2026" for yearly)
-3. THE App SHALL draw a donut-style pie chart on an HTML5 `<canvas>` element using only expense transactions within the selected period
+3. THE App SHALL draw a pie chart on an HTML5 `<canvas>` element using only expense transactions within the selected period
 4. WHEN no expense transactions exist for the selected period, THE App SHALL show an empty state message and hide the canvas
 5. THE App SHALL render a category legend below the chart listing each category name and its percentage of total expenses for the period
 6. EACH category slice and its corresponding legend badge SHALL use a distinct colour from a predefined 10-colour palette
