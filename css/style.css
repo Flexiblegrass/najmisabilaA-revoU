@@ -1,236 +1,361 @@
 /* ================================================================
-   style.css — Expense & Budget Tracker
-   TC-1: Only 1 CSS file (this file)
-   TC-3: Targets modern browsers (Chrome, Firefox, Edge, Safari)
+   style.css — Expense & Budget Visualizer
+   TC-1: 1 file CSS  |  TC-3: modern browsers
+   Warna & ukuran mengikuti desain Figma. Layout dibuat responsive.
 ================================================================ */
 
-
 /* ----------------------------------------------------------------
-   1. CSS RESET / BASE
-      - Remove default margin/padding
-      - Set box-sizing globally
-      - Base font and color tokens
+   1. RESET & TOKENS
 ---------------------------------------------------------------- */
-
-* {
-  /* TODO: reset margin, padding, box-sizing */
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  /* TODO: Define your color palette as CSS variables
-     Example:
-     --color-primary: #...;
-     --color-danger:  #...;
-     --color-bg:      #...;
-     --color-surface: #...;
-     --color-text:    #...;
-  */
+  /* Warna (dari Figma) */
+  --color-primary:      #4f46e5;   /* indigo — tombol New */
+  --color-primary-dark: #4338ca;
+  --color-edit:         #f6ac36;   /* kuning — tombol edit */
+  --color-edit-dark:    #d98e12;
+  --color-danger:       #ef4444;   /* merah — pengeluaran / hapus */
+  --color-danger-dark:  #dc2626;
+  --color-success:      #10b981;   /* hijau — pemasukan */
 
-  /* TODO: Define typography tokens
-     --font-base: ...;
-     --font-size-sm: ...;
-     --font-size-md: ...;
-     --font-size-lg: ...;
-  */
+  --color-header:   #1e293b;       /* navy — header */
+  --color-panel:    #1f2937;       /* gelap — panel list */
+  --color-bg:       #f3f4f6;       /* abu terang — background */
+  --color-surface:  #ffffff;       /* putih — kartu */
+  --color-border:   #e5e7eb;       /* garis */
 
-  /* TODO: Define spacing tokens
-     --space-xs: ...;
-     --space-sm: ...;
-     --space-md: ...;
-     --space-lg: ...;
-  */
+  --color-text:     #1f2937;
+  --color-muted:    #6b7280;
+  --color-nav:      #94a3b8;        /* nav non-aktif */
+  --color-nav-active:#60a5fa;       /* nav aktif (biru muda) */
 
-  /* TODO: Define border-radius tokens
-     --radius-sm: ...;
-     --radius-md: ...;
-  */
+  /* Font */
+  --font-base: 'Manrope', system-ui, sans-serif;
+
+  /* Radius & spacing */
+  --radius: 12px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
 }
 
 body {
-  /* TODO: Apply font, background color, text color */
-  /* TODO: Set a max-width and center horizontally for desktop */
+  font-family: var(--font-base);
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
 }
 
-
 /* ----------------------------------------------------------------
-   2. HEADER
-      - App title styling
-      - Optional: sticky header for mobile
+   2. HEADER + NAV (desktop)
 ---------------------------------------------------------------- */
-
 #app-header {
-  /* TODO */
+  background: var(--color-header);
+  height: 93px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 48px;
 }
 
-#app-header h1 {
-  /* TODO */
+#main-nav {
+  display: flex;
+  gap: 40px;
 }
 
+.nav-link {
+  color: var(--color-nav);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding-bottom: 4px;
+  transition: color .15s;
+}
+.nav-link:hover { color: #cbd5e1; }
+.nav-link.active {
+  color: var(--color-nav-active);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 
 /* ----------------------------------------------------------------
-   3. MAIN LAYOUT
-      - Stack sections vertically on mobile
-      - Optional: grid/flex layout for wider screens
+   3. MAIN
 ---------------------------------------------------------------- */
-
 #app-main {
-  /* TODO: padding, display, gap */
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
 }
 
-
 /* ----------------------------------------------------------------
-   4. SUMMARY CARDS  (#summary-section)
-      - Flexbox row of 3 cards
-      - Responsive: wrap or scroll on small screens
+   4. SUMMARY CARDS (4 kartu)
 ---------------------------------------------------------------- */
-
 #summary-section {
-  /* TODO: display flex, gap, justify-content */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
 }
 
 .card {
-  /* TODO: background, padding, border-radius, flex sizing */
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
 }
-
-.card-label {
-  /* TODO: font-size, color, display */
-}
-
+.card-label { font-size: 1rem; font-weight: 700; color: var(--color-text); }
 .card-value {
-  /* TODO: font-size, font-weight, color */
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
 }
-
+.value-income  { color: var(--color-success); }
+.value-expense { color: var(--color-danger); }
+/* saldo minus */
+.card-value.negative { color: var(--color-danger); }
 
 /* ----------------------------------------------------------------
-   5. CHART SECTION  (#chart-section)
-      - Center the canvas / progress bar
-      - Responsive sizing
+   5. LIST HEADER (tanggal + tombol)
 ---------------------------------------------------------------- */
-
-#chart-section {
-  /* TODO */
+#list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
 }
+#current-date { font-weight: 700; font-size: 1.1rem; }
 
-#budget-chart {
-  /* TODO: max-width, display block, margin auto */
+#action-buttons { display: flex; gap: var(--space-sm); }
+
+.btn-icon {
+  border: none;
+  border-radius: 8px;
+  width: 44px; height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
 }
+.btn-edit-mode { background: var(--color-edit); }
+.btn-edit-mode:hover { background: var(--color-edit-dark); }
 
-/* Optional CSS progress bar styles
-.progress-bar-track { }
-.progress-bar-fill  { }
-*/
-
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  height: 44px;
+  padding: 0 20px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover { background: var(--color-primary-dark); }
+.btn-plus { font-size: 1.3rem; line-height: 1; }
 
 /* ----------------------------------------------------------------
-   6. FORM STYLES  (#expense-form, #budget-form)
-      - Form group layout (label + input stacked)
-      - Input / select styling
-      - Submit button styling
+   6. PANEL LIST (gelap)
 ---------------------------------------------------------------- */
-
-#form-section,
-#budget-section {
-  /* TODO: background, padding, border-radius */
-}
-
-.form-group {
-  /* TODO: display flex column, gap, margin-bottom */
-}
-
-.form-group label {
-  /* TODO: font-weight, font-size */
-}
-
-.form-group input,
-.form-group select {
-  /* TODO: padding, border, border-radius, font-size, width 100% */
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  /* TODO: outline, border-color */
-}
-
-button[type="submit"] {
-  /* TODO: background, color, padding, border, border-radius, cursor, width */
-}
-
-button[type="submit"]:hover {
-  /* TODO: hover state */
-}
-
-
-/* ----------------------------------------------------------------
-   7. EXPENSE LIST  (#list-section)
-      - List reset (no bullets)
-      - Individual list item layout
-      - Delete button styling
----------------------------------------------------------------- */
-
 #list-section {
-  /* TODO */
+  background: var(--color-panel);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
-#expense-list {
-  /* TODO: list-style none, padding 0, margin 0 */
-}
+#expense-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
 
+/* tiap baris transaksi (kartu putih di dalam panel gelap) */
 #expense-list li {
-  /* TODO: display flex, justify-content space-between, align-items center */
-  /* TODO: padding, border-bottom, gap */
+  background: var(--color-surface);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
 }
+.expense-info { display: flex; flex-direction: column; gap: 2px; }
+.expense-name { font-weight: 700; font-size: 1.05rem; }
+.expense-desc { font-size: .85rem; color: var(--color-muted); }
 
-.expense-info {
-  /* TODO: flex grow, text details */
-}
-
-.expense-amount {
-  /* TODO: font-weight, color */
-}
+.expense-amount { font-weight: 700; font-variant-numeric: tabular-nums; }
+.expense-amount.income  { color: var(--color-success); }
+.expense-amount.expense { color: var(--color-danger); }
 
 .btn-delete {
-  /* TODO: background, color, border, cursor, padding, border-radius */
+  background: var(--color-danger);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  width: 36px; height: 36px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.btn-delete:hover {
-  /* TODO: hover state */
-}
-
+.btn-delete:hover { background: var(--color-danger-dark); }
 
 /* ----------------------------------------------------------------
-   8. EMPTY STATE
-      - Centered message when list is empty
+   7. EMPTY STATE
 ---------------------------------------------------------------- */
-
 #empty-state {
-  /* TODO: text-align center, color, font-size, padding */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  color: #fff;
+  text-align: center;
 }
-
-.hidden {
-  display: none;
-}
-
+#empty-state p { font-size: 1.6rem; font-weight: 700; }
+/* disembunyikan saat ada data (JS toggle .hidden) */
+.hidden { display: none !important; }
 
 /* ----------------------------------------------------------------
-   9. FOOTER
+   8. BOTTOM NAV — mobile only
 ---------------------------------------------------------------- */
+#bottom-nav { display: none; }
 
-#app-footer {
-  /* TODO */
+.bnav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-decoration: none;
+  color: var(--color-muted);
+  font-size: .7rem;
+  font-weight: 600;
+  flex: 1;
 }
-
+.bnav-item.active { color: var(--color-primary); }
+.bnav-icon { font-size: 1.3rem; }
 
 /* ----------------------------------------------------------------
-   10. RESPONSIVE — MOBILE FIRST
-       Adjust layouts for larger screens using min-width breakpoints
+   9. RESPONSIVE
 ---------------------------------------------------------------- */
 
-/* Tablet: 600px and up */
-@media (min-width: 600px) {
-  /* TODO: e.g. side-by-side form and chart */
+/* Tablet: 4 kartu -> 2 kolom */
+@media (max-width: 768px) {
+  #summary-section { grid-template-columns: 1fr 1fr; }
+  #app-header { padding: 0 20px; }
+  #main-nav { gap: 20px; }
+  .nav-link { font-size: .95rem; }
 }
 
-/* Desktop: 900px and up */
-@media (min-width: 900px) {
-  /* TODO: e.g. wider max-width, multi-column layout */
+/* Mobile: nav atas disembunyikan, bottom nav muncul */
+@media (max-width: 600px) {
+  #app-header { display: none; }
+
+  #bottom-nav {
+    display: flex;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    padding: 8px 0;
+    z-index: 100;
+  }
+
+  #app-main { padding: var(--space-md); padding-bottom: 80px; }
+  .card-value { font-size: 1.25rem; }
+  #empty-state p { font-size: 1.2rem; }
+
+  /* tiap baris: tombol hapus tetap kejangkau */
+  #expense-list li { padding: 14px 16px; }
+}
+
+/* ================================================================
+   10. MODAL FORM + TOAST + item actions  (ditambah untuk logika)
+================================================================ */
+
+/* tombol edit di tiap baris */
+.item-actions { display: flex; gap: 8px; }
+.btn-edit {
+  background: var(--color-edit);
+  color: #fff; border: none; border-radius: 8px;
+  width: 36px; height: 36px; cursor: pointer; font-size: 1rem;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.btn-edit:hover { background: var(--color-edit-dark); }
+
+/* overlay */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-md); z-index: 200;
+}
+
+/* modal */
+#form-modal {
+  background: var(--color-panel);
+  border-radius: var(--radius);
+  width: 100%; max-width: 620px;
+  max-height: 90vh; overflow-y: auto;
+  padding: var(--space-lg);
+  display: flex; flex-direction: column; gap: var(--space-md);
+}
+.form-modal-head { display: flex; align-items: center; gap: var(--space-md); }
+.form-modal-head h2 { color: #fff; font-size: 1.3rem; }
+.btn-back {
+  background: transparent; border: none; color: #fff;
+  font-size: 2rem; line-height: 1; cursor: pointer; padding: 0 4px;
+}
+
+.form-body { display: flex; flex-direction: column; gap: 14px; }
+.form-row { display: flex; gap: 12px; }
+.field-grow { flex: 1; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label { color: #cbd5e1; font-size: .85rem; font-weight: 600; }
+.form-field input,
+.form-field select {
+  font-family: inherit; font-size: 1rem;
+  padding: 12px 14px;
+  border: none; border-radius: 8px;
+  background: #fff; color: var(--color-text);
+  width: 100%;
+}
+.form-field input:focus,
+.form-field select:focus { outline: 2px solid var(--color-primary); }
+
+.form-error { color: #fecaca; background: rgba(239,68,68,.2);
+  padding: 8px 12px; border-radius: 8px; font-size: .9rem; }
+
+.form-foot { display: flex; justify-content: flex-end; }
+
+/* toast */
+.toast {
+  position: fixed; left: 50%; bottom: 32px;
+  transform: translateX(-50%) translateY(20px);
+  background: #fff; color: var(--color-text);
+  padding: 14px 22px; border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  display: flex; align-items: center; gap: 12px;
+  font-weight: 700; z-index: 300;
+  opacity: 0; transition: opacity .3s, transform .3s;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast-check { color: var(--color-success); font-size: 1.2rem; }
+
+@media (max-width: 600px) {
+  .toast { bottom: 90px; }   /* di atas bottom nav */
 }
