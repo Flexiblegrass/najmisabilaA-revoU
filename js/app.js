@@ -684,14 +684,12 @@ function drawPieChart(canvas, cats, colorMap, total) {
     ctx.closePath();
     ctx.fillStyle = colorMap[cat];
     ctx.fill();
+    // white divider between slices
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
     startAngle += slice;
   });
-
-  // white donut hole
-  ctx.beginPath();
-  ctx.arc(cx, cy, r * 0.5, 0, 2 * Math.PI);
-  ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--color-bg').trim() || '#f3f4f6';
-  ctx.fill();
 }
 
 /* ----------------------------------------------------------------
