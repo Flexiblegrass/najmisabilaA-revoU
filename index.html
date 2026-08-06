@@ -1,190 +1,450 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Expense & Budget Tracker</title>
-
-  <!-- TC-1: Single CSS file -->
+  <title>Budget Tracker</title>
   <link rel="stylesheet" href="css/style.css" />
+  <!-- FIX 15: sr-only utility for visually-hidden labels -->
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
 
   <!-- ============================================================
-       HEADER
-       - App title / logo area
-       - Optional: month/year navigator
+       HEADER — Desktop nav (hidden on mobile)
   ============================================================ -->
   <header id="app-header">
-    <h1><!-- App Title --></h1>
-    <!-- TODO: Add subtitle or month navigator here -->
+    <!-- FIX 1: aria-label on nav; role="tab" + aria-selected + id on each link -->
+    <nav id="main-nav" aria-label="Navigasi utama">
+      <a href="#" class="nav-link active" role="tab" aria-selected="true"  id="nav-tab-transaksi" data-tab="transaksi" data-i18n="nav.transaksi">Transaksi</a>
+      <a href="#" class="nav-link" role="tab" aria-selected="false" id="nav-tab-dompet"     data-tab="dompet"     data-i18n="nav.dompet">Dompet</a>
+      <a href="#" class="nav-link" role="tab" aria-selected="false" id="nav-tab-laporan"    data-tab="laporan"    data-i18n="nav.laporan">Laporan</a>
+      <a href="#" class="nav-link" role="tab" aria-selected="false" id="nav-tab-riwayat"    data-tab="riwayat"    data-i18n="nav.riwayat">Riwayat</a>
+      <a href="#" class="nav-link" role="tab" aria-selected="false" id="nav-tab-pengaturan" data-tab="pengaturan" data-i18n="nav.pengaturan">Pengaturan</a>
+    </nav>
   </header>
 
   <!-- ============================================================
-       MAIN WRAPPER
-       All content sections live inside here
+       MAIN — each .tab-view is one screen
   ============================================================ -->
   <main id="app-main">
 
-    <!-- ----------------------------------------------------------
-         SECTION 1: BUDGET SUMMARY CARDS
-         - Total Budget
-         - Total Expenses
-         - Remaining Balance
-    ---------------------------------------------------------- -->
-    <section id="summary-section">
-      <div class="card" id="card-budget">
-        <span class="card-label"><!-- e.g. "Total Budget" --></span>
-        <span class="card-value" id="total-budget"><!-- dynamic --></span>
+    <!-- --------------------------------------------------------
+         TAB: TRANSAKSI
+    -------------------------------------------------------- -->
+    <!-- FIX 2: role="tabpanel" + aria-labelledby + tabindex -->
+    <div id="tab-transaksi" class="tab-view active" role="tabpanel" aria-labelledby="nav-tab-transaksi" tabindex="0">
+
+      <!-- FIX 4: aria-label on section; cards become <article> -->
+      <section id="summary-section" aria-label="Ringkasan keuangan">
+        <article class="card">
+          <span class="card-label" data-i18n="summary.income">Pemasukkan</span>
+          <span class="card-value value-income" id="total-income">Rp.0</span>
+        </article>
+        <article class="card">
+          <span class="card-label" data-i18n="summary.expense">Pengeluaran</span>
+          <span class="card-value value-expense" id="total-expense">Rp.0</span>
+        </article>
+        <article class="card">
+          <span class="card-label" data-i18n="summary.balance">Saldo Tersisa</span>
+          <span class="card-value" id="remaining-balance">Rp.0</span>
+        </article>
+        <article class="card">
+          <span class="card-label" data-i18n="summary.items">Jumlah Item</span>
+          <span class="card-value" id="total-items">0</span>
+        </article>
+      </section>
+
+      <!-- list header: date + buttons -->
+      <div id="list-header">
+        <!-- FIX 5: <time> element with aria-live -->
+        <time id="current-date" aria-live="polite"></time>
+        <div id="action-buttons">
+          <button class="btn-icon btn-edit-mode" id="btn-toggle-edit" title="Edit mode">
+            ✏️
+          </button>
+          <button class="btn-primary" id="btn-new-transaction">
+            <!-- FIX 14: decorative icon aria-hidden -->
+            <span class="btn-plus" aria-hidden="true">+</span>
+            <span data-i18n="btn.new">New</span>
+          </button>
+        </div>
       </div>
 
-      <div class="card" id="card-expenses">
-        <span class="card-label"><!-- e.g. "Total Expenses" --></span>
-        <span class="card-value" id="total-expenses"><!-- dynamic --></span>
+      <!-- transaction list panel -->
+      <!-- FIX 6: aria-label on section and list with aria-live -->
+      <section id="list-section" aria-label="Daftar transaksi">
+        <ul id="expense-list" aria-label="Transaksi" aria-live="polite"></ul>
+
+        <!-- empty state -->
+        <div id="empty-state" class="hidden">
+          <div class="empty-icon">
+            <!-- receipt with X icon (inline SVG, no external asset) -->
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="14" y="8" width="52" height="56" rx="6" stroke="white" stroke-width="3.5"/>
+              <path d="M14 64 Q20 58 26 64 Q32 70 38 64 Q44 58 50 64 Q56 70 62 64 Q68 58 66 64" stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+              <path d="M30 30 L50 50M50 30 L30 50" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p data-i18n="empty.transaction">Belum ada Transaksi</p>
+        </div>
+      </section>
+    </div><!-- /tab-transaksi -->
+
+
+    <!-- --------------------------------------------------------
+         TAB: DOMPET
+    -------------------------------------------------------- -->
+    <!-- FIX 2: role="tabpanel" + aria-labelledby + tabindex -->
+    <div id="tab-dompet" class="tab-view hidden" role="tabpanel" aria-labelledby="nav-tab-dompet" tabindex="0">
+
+      <!-- FIX 7: saldo card becomes <article> -->
+      <div class="saldo-card-wrap">
+        <article class="card saldo-card" aria-label="Total saldo">
+          <span class="card-label" data-i18n="dompet.totalSaldo">Total Saldo</span>
+          <span class="card-value" id="total-saldo">Rp.0</span>
+        </article>
       </div>
 
-      <div class="card" id="card-balance">
-        <span class="card-label"><!-- e.g. "Remaining" --></span>
-        <span class="card-value" id="remaining-balance"><!-- dynamic --></span>
+      <!-- header buttons -->
+      <div id="dompet-list-header">
+        <div id="dompet-action-buttons">
+          <button class="btn-icon btn-edit-mode" id="btn-toggle-dompet-edit" title="Edit mode">✏️</button>
+          <button class="btn-primary" id="btn-new-wallet">
+            <!-- FIX 14: decorative icon aria-hidden -->
+            <span class="btn-plus" aria-hidden="true">+</span>
+            <span data-i18n="btn.new">New</span>
+          </button>
+        </div>
       </div>
-    </section>
 
-    <!-- ----------------------------------------------------------
-         SECTION 2: VISUALIZATION / CHART AREA
-         - Budget vs Expense bar, pie chart, progress ring, etc.
-         - Use <canvas> or pure CSS bars — your choice
-    ---------------------------------------------------------- -->
-    <section id="chart-section">
-      <h2><!-- Section title e.g. "Spending Overview" --></h2>
+      <!-- FIX 7: section aria-label and wallet list aria-label + aria-live -->
+      <section id="dompet-list-section" aria-label="Daftar dompet">
+        <ul id="wallet-list" aria-label="Dompet" aria-live="polite"></ul>
+        <div id="wallet-empty-state" class="hidden">
+          <p data-i18n="empty.wallet">Belum ada Dompet</p>
+        </div>
+      </section>
+    </div><!-- /tab-dompet -->
 
-      <!-- Option A: HTML5 Canvas -->
-      <canvas id="budget-chart" width="300" height="300"></canvas>
 
-      <!-- Option B: CSS-only progress bar (uncomment to use instead)
-      <div class="progress-bar-track">
-        <div class="progress-bar-fill" id="expense-bar"></div>
+    <!-- --------------------------------------------------------
+         TAB: LAPORAN
+    -------------------------------------------------------- -->
+    <!-- FIX 2: role="tabpanel" + aria-labelledby + tabindex -->
+    <div id="tab-laporan" class="tab-view hidden" role="tabpanel" aria-labelledby="nav-tab-laporan" tabindex="0">
+
+      <!-- FIX 8: period tabs group, aria-pressed on buttons -->
+      <div id="laporan-period-tabs" role="group" aria-label="Periode laporan">
+        <button class="period-tab active" data-period="harian" aria-pressed="true">
+          <span data-i18n="laporan.harian">Harian</span>
+          <!-- FIX 14: decorative icon aria-hidden -->
+          <span class="calendar-icon" aria-hidden="true">📅</span>
+        </button>
+        <button class="period-tab" data-period="bulanan" aria-pressed="false">
+          <span data-i18n="laporan.bulanan">Bulanan</span>
+          <span class="calendar-icon" aria-hidden="true">📅</span>
+        </button>
+        <button class="period-tab" data-period="tahunan" aria-pressed="false">
+          <span data-i18n="laporan.tahunan">Tahunan</span>
+          <span class="calendar-icon" aria-hidden="true">📅</span>
+        </button>
       </div>
-      -->
-    </section>
 
-    <!-- ----------------------------------------------------------
-         SECTION 3: ADD EXPENSE FORM
-         - Category selector
-         - Amount input
-         - Description / note
-         - Submit button
-    ---------------------------------------------------------- -->
-    <section id="form-section">
-      <h2><!-- e.g. "Add Expense" --></h2>
+      <!-- period label -->
+      <h2 id="laporan-period-label" class="laporan-period-label"></h2>
 
-      <form id="expense-form" novalidate>
+      <!-- FIX 8: canvas with role="img" and aria-label -->
+      <div class="chart-wrap">
+        <canvas id="pie-chart" width="260" height="260" role="img" aria-label="Grafik pengeluaran berdasarkan kategori"></canvas>
+        <div id="chart-empty-msg" class="chart-empty-msg hidden">
+          <p data-i18n="empty.laporan">Belum ada data pengeluaran</p>
+        </div>
+      </div>
 
-        <!-- Category -->
-        <div class="form-group">
-          <label for="expense-category"><!-- e.g. "Category" --></label>
-          <select id="expense-category" name="category">
-            <option value="">-- Select --</option>
-            <!-- TODO: Add category options -->
+      <!-- FIX 8: legend aria-label -->
+      <ul id="category-legend" aria-label="Legenda kategori"></ul>
+
+    </div><!-- /tab-laporan -->
+
+
+    <!-- --------------------------------------------------------
+         TAB: RIWAYAT
+    -------------------------------------------------------- -->
+    <!-- FIX 2: role="tabpanel" + aria-labelledby + tabindex -->
+    <div id="tab-riwayat" class="tab-view hidden" role="tabpanel" aria-labelledby="nav-tab-riwayat" tabindex="0">
+
+      <!-- FIX 9: visually-hidden label for search; aria-hidden on icon -->
+      <div class="riwayat-search-wrap">
+        <label for="riwayat-search" class="sr-only">Cari transaksi</label>
+        <input type="text" id="riwayat-search" data-i18n-placeholder="riwayat.search" placeholder="Cari" />
+        <span class="search-icon" aria-hidden="true">🔍</span>
+      </div>
+
+      <!-- FIX 9: riwayat list aria-label + aria-live -->
+      <ul id="riwayat-list" aria-label="Riwayat transaksi" aria-live="polite"></ul>
+
+      <div id="riwayat-empty-state" class="hidden">
+        <p data-i18n="empty.riwayat">Belum ada riwayat transaksi</p>
+      </div>
+    </div><!-- /tab-riwayat -->
+
+
+    <!-- --------------------------------------------------------
+         TAB: PENGATURAN
+    -------------------------------------------------------- -->
+    <!-- FIX 2: role="tabpanel" + aria-labelledby + tabindex -->
+    <div id="tab-pengaturan" class="tab-view hidden" role="tabpanel" aria-labelledby="nav-tab-pengaturan" tabindex="0">
+
+      <!-- FIX 10: Data accordion with aria-expanded + aria-controls; body gets id -->
+      <div class="setting-accordion" id="accordion-data">
+        <button class="accordion-trigger" data-target="accordion-data" aria-expanded="false" aria-controls="accordion-data-body">
+          <span data-i18n="setting.data">Data</span>
+          <!-- FIX 14: decorative arrow aria-hidden -->
+          <span class="accordion-arrow" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body hidden" id="accordion-data-body">
+          <button class="setting-row-btn" id="btn-hapus-data">
+            <span data-i18n="setting.hapusData">Hapus data</span>
+          </button>
+          <button class="setting-row-btn" id="btn-export-data">
+            <span data-i18n="setting.exportData">Export data</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- FIX 10: Bahasa accordion with aria-expanded + aria-controls; body gets id -->
+      <div class="setting-accordion" id="accordion-bahasa">
+        <button class="accordion-trigger" data-target="accordion-bahasa" aria-expanded="false" aria-controls="accordion-bahasa-body">
+          <span data-i18n="setting.bahasa">Bahasa</span>
+          <span class="accordion-arrow" aria-hidden="true">▶</span>
+        </button>
+        <div class="accordion-body hidden" id="accordion-bahasa-body">
+          <button class="setting-row-btn lang-btn" data-lang="id">
+            🇮🇩 Indonesia
+          </button>
+          <button class="setting-row-btn lang-btn" data-lang="en">
+            🇬🇧 English
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /tab-pengaturan -->
+
+  </main><!-- /app-main -->
+
+
+  <!-- ============================================================
+       BOTTOM NAV — mobile only
+  ============================================================ -->
+  <!-- FIX 3: aria-label on bottom nav; aria-current on items -->
+  <nav id="bottom-nav" aria-label="Navigasi bawah">
+    <a href="#" class="bnav-item active" data-tab="transaksi" aria-current="page">
+      <!-- FIX 14: decorative icon aria-hidden -->
+      <span class="bnav-icon" aria-hidden="true">💳</span>
+      <span data-i18n="nav.transaksi">Transaksi</span>
+    </a>
+    <a href="#" class="bnav-item" data-tab="dompet" aria-current="false">
+      <span class="bnav-icon" aria-hidden="true">👛</span>
+      <span data-i18n="nav.dompet">Dompet</span>
+    </a>
+    <a href="#" class="bnav-item" data-tab="laporan" aria-current="false">
+      <span class="bnav-icon" aria-hidden="true">📊</span>
+      <span data-i18n="nav.laporan">Laporan</span>
+    </a>
+    <a href="#" class="bnav-item" data-tab="riwayat" aria-current="false">
+      <span class="bnav-icon" aria-hidden="true">🕐</span>
+      <span data-i18n="nav.riwayat">Riwayat</span>
+    </a>
+    <a href="#" class="bnav-item" data-tab="pengaturan" aria-current="false">
+      <span class="bnav-icon" aria-hidden="true">⚙️</span>
+      <span data-i18n="nav.pengaturan">Pengaturan</span>
+    </a>
+  </nav>
+
+
+  <!-- ============================================================
+       MODAL OVERLAY — Add / Edit Transaction
+  ============================================================ -->
+  <div class="overlay hidden" id="transaction-modal-overlay">
+    <div id="form-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+      <div class="form-modal-head">
+        <button class="btn-back" id="btn-modal-close" aria-label="Tutup">&#8249;</button>
+        <h2 id="modal-title" data-i18n="modal.addTitle">Tambah Transaksi</h2>
+      </div>
+
+      <!-- FIX 11: sr-only labels for all form inputs -->
+      <div class="form-body" id="transaction-form-body">
+
+        <!-- Date + Time row -->
+        <div class="form-row">
+          <div class="form-field field-grow">
+            <label for="field-date" class="sr-only">Tanggal</label>
+            <input type="date" id="field-date" />
+          </div>
+          <div class="form-field" style="min-width:90px;">
+            <label for="field-time" class="sr-only">Waktu</label>
+            <input type="time" id="field-time" />
+          </div>
+        </div>
+
+        <!-- Wallet select -->
+        <div class="form-field">
+          <label for="field-wallet" class="sr-only">Dompet</label>
+          <select id="field-wallet">
+            <option value="" data-i18n="modal.pilihDompet">Pilih Opsi Dompet</option>
+          </select>
+        </div>
+
+        <!-- Type select: Pemasukan / Pengeluaran -->
+        <div class="form-field">
+          <label for="field-type" class="sr-only">Jenis transaksi</label>
+          <select id="field-type">
+            <option value="income"  data-i18n="modal.income">Pemasukan</option>
+            <option value="expense" data-i18n="modal.expense">Pengeluaran</option>
           </select>
         </div>
 
         <!-- Amount -->
-        <div class="form-group">
-          <label for="expense-amount"><!-- e.g. "Amount" --></label>
-          <input
-            type="number"
-            id="expense-amount"
-            name="amount"
-            min="0"
-            placeholder="0"
-          />
+        <div class="form-field">
+          <label for="field-amount" class="sr-only">Nominal</label>
+          <input type="number" id="field-amount" min="0" data-i18n-placeholder="modal.nominal" placeholder="Masukkan nominal" />
         </div>
 
-        <!-- Description -->
-        <div class="form-group">
-          <label for="expense-desc"><!-- e.g. "Description" --></label>
-          <input
-            type="text"
-            id="expense-desc"
-            name="description"
-            placeholder=""
-          />
+        <!-- Category -->
+        <div class="form-field">
+          <label for="field-category" class="sr-only">Kategori</label>
+          <input type="text" id="field-category" list="category-datalist"
+               data-i18n-placeholder="modal.kategori" placeholder="Masukkan kategori"
+               autocomplete="off" />
+          <datalist id="category-datalist"></datalist>
         </div>
 
-        <!-- Date -->
-        <div class="form-group">
-          <label for="expense-date"><!-- e.g. "Date" --></label>
-          <input type="date" id="expense-date" name="date" />
+        <!-- Item name -->
+        <div class="form-field">
+          <label for="field-item" class="sr-only">Jenis item</label>
+          <input type="text" id="field-item" data-i18n-placeholder="modal.item" placeholder="Masukkan jenis item" />
         </div>
 
-        <!-- Submit -->
-        <button type="submit" id="btn-add-expense">
-          <!-- e.g. "Add Expense" -->
-        </button>
-
-      </form>
-    </section>
-
-    <!-- ----------------------------------------------------------
-         SECTION 4: SET BUDGET FORM
-         - Input to set/update monthly budget
-    ---------------------------------------------------------- -->
-    <section id="budget-section">
-      <h2><!-- e.g. "Set Budget" --></h2>
-
-      <form id="budget-form" novalidate>
-        <div class="form-group">
-          <label for="budget-amount"><!-- e.g. "Monthly Budget" --></label>
-          <input
-            type="number"
-            id="budget-amount"
-            name="budget"
-            min="0"
-            placeholder="0"
-          />
+        <!-- Description (optional) -->
+        <div class="form-field">
+          <label for="field-desc" class="sr-only">Deskripsi</label>
+          <input type="text" id="field-desc" data-i18n-placeholder="modal.deskripsi" placeholder="Deskripsi (opsional)" />
         </div>
 
-        <button type="submit" id="btn-set-budget">
-          <!-- e.g. "Save Budget" -->
-        </button>
-      </form>
-    </section>
+        <!-- Error message -->
+        <p class="form-error hidden" id="form-error"></p>
 
-    <!-- ----------------------------------------------------------
-         SECTION 5: EXPENSE LIST / HISTORY
-         - List of recorded expenses
-         - Each item: category, description, amount, date, delete btn
-    ---------------------------------------------------------- -->
-    <section id="list-section">
-      <h2><!-- e.g. "Expense History" --></h2>
+      </div><!-- /form-body -->
 
-      <!-- Filter / sort controls (optional) -->
-      <div id="list-controls">
-        <!-- TODO: Add filter by category or date here -->
+      <div class="form-foot">
+        <button class="btn-primary" id="btn-save-transaction" data-i18n="btn.simpan">Simpan</button>
       </div>
 
-      <!-- Expense items rendered here by JS -->
-      <ul id="expense-list">
-        <!-- Items injected dynamically -->
-      </ul>
+    </div>
+  </div><!-- /transaction-modal-overlay -->
 
-      <!-- Empty state message -->
-      <p id="empty-state" class="hidden">
-        <!-- e.g. "No expenses yet. Start by adding one!" -->
-      </p>
-    </section>
-
-  </main>
 
   <!-- ============================================================
-       FOOTER
-       - Optional: version, credits, or clear-data button
+       MODAL OVERLAY — Add / Edit Wallet
   ============================================================ -->
-  <footer id="app-footer">
-    <!-- TODO: Add footer content -->
-  </footer>
+  <div class="overlay hidden" id="wallet-modal-overlay">
+    <div id="wallet-modal" role="dialog" aria-modal="true" aria-labelledby="wallet-modal-title">
 
-  <!-- TC-1: Single JS file (loaded at bottom so DOM is ready) -->
+      <div class="form-modal-head">
+        <button class="btn-back" id="btn-wallet-modal-close" aria-label="Tutup">&#8249;</button>
+        <h2 id="wallet-modal-title" data-i18n="modal.addWallet">Tambah Dompet</h2>
+      </div>
+
+      <!-- FIX 12: sr-only labels for wallet form inputs -->
+      <div class="form-body">
+        <div class="form-field">
+          <label for="field-wallet-name" class="sr-only">Nama sumber</label>
+          <input type="text" id="field-wallet-name" data-i18n-placeholder="modal.sumberBaru" placeholder="Sumber baru" />
+        </div>
+        <div class="form-field">
+          <label for="field-wallet-amount" class="sr-only">Nominal awal</label>
+          <input type="number" id="field-wallet-amount" min="0" data-i18n-placeholder="modal.nominal" placeholder="Nominal" />
+        </div>
+        <p class="form-error hidden" id="wallet-form-error"></p>
+      </div>
+
+      <div class="form-foot">
+        <button class="btn-primary" id="btn-save-wallet" data-i18n="btn.simpan">Simpan</button>
+      </div>
+
+    </div>
+  </div><!-- /wallet-modal-overlay -->
+
+
+  <!-- ============================================================
+       MODAL OVERLAY — Transaction Detail (Riwayat drill-down)
+  ============================================================ -->
+  <div class="overlay hidden" id="detail-modal-overlay">
+    <div id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-modal-title">
+      <div class="form-modal-head">
+        <button class="btn-back" id="btn-detail-close" aria-label="Tutup">&#8249;</button>
+        <h2 id="detail-modal-title"></h2>
+      </div>
+      <div id="detail-modal-body" class="detail-body"></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       MODAL OVERLAY — Export choice (PDF / Excel)
+  ============================================================ -->
+  <div class="overlay hidden" id="export-modal-overlay">
+    <!-- FIX 13: aria-labelledby pointing to export modal title -->
+    <div id="export-modal" role="dialog" aria-modal="true" aria-labelledby="export-modal-title">
+      <div class="form-modal-head">
+        <button class="btn-back" id="btn-export-close" aria-label="Tutup">&#8249;</button>
+        <h2 id="export-modal-title" data-i18n="export.title">Export</h2>
+      </div>
+      <div class="export-btns">
+        <button class="btn-export-pdf"   id="btn-export-pdf">PDF</button>
+        <button class="btn-export-excel" id="btn-export-excel">Excel</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       CONFIRM DIALOG — Hapus data
+  ============================================================ -->
+  <div class="overlay hidden" id="confirm-overlay">
+    <div id="confirm-dialog" role="alertdialog" aria-modal="true">
+      <p id="confirm-message" data-i18n="confirm.hapusData">Hapus semua data? Tindakan ini tidak dapat dibatalkan.</p>
+      <div class="confirm-btns">
+        <button class="btn-confirm-cancel" id="btn-confirm-cancel" data-i18n="btn.batal">Batal</button>
+        <button class="btn-confirm-ok"     id="btn-confirm-ok"     data-i18n="btn.hapus">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       TOAST NOTIFICATION
+  ============================================================ -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <!-- FIX 14: decorative checkmark aria-hidden -->
+    <span class="toast-check" aria-hidden="true">✔</span>
+    <span id="toast-message"></span>
+  </div>
+
+
+  <!-- TC-1: single JS file -->
   <script src="js/app.js"></script>
 
 </body>

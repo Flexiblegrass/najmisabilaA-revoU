@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Remind on Save",
+      "trigger": "PostFileSave",
+      "matcher": "\\.(html|css|js)$",
+      "action": {
+        "type": "agent",
+        "prompt": "A project file was saved. If there are any obvious issues (broken HTML structure, missing closing tags, or JS syntax errors visible from context), briefly mention them. Otherwise stay silent."
+      }
+    }
+  ]
+}

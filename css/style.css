@@ -359,3 +359,476 @@ body {
 @media (max-width: 600px) {
   .toast { bottom: 90px; }   /* di atas bottom nav */
 }
+
+
+/* ================================================================
+   ADDITIONS — Laporan, Riwayat, Pengaturan, Dompet, Detail modals
+================================================================ */
+
+/* ----------------------------------------------------------------
+   TAB VIEWS — show/hide
+---------------------------------------------------------------- */
+.tab-view { display: flex; flex-direction: column; gap: var(--space-lg); }
+.tab-view.hidden { display: none; }
+
+/* ----------------------------------------------------------------
+   DOMPET TAB
+---------------------------------------------------------------- */
+.saldo-card-wrap {
+  display: flex;
+  justify-content: center;
+}
+.saldo-card {
+  min-width: 260px;
+  max-width: 400px;
+  width: 100%;
+}
+
+#dompet-list-header {
+  display: flex;
+  justify-content: flex-end;
+}
+#dompet-action-buttons { display: flex; gap: var(--space-sm); }
+
+#dompet-list-section {
+  background: var(--color-panel);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+#wallet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#wallet-list li {
+  background: var(--color-surface);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.wallet-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.wallet-amount {
+  font-weight: 700;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-align: right;
+}
+
+#wallet-empty-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: var(--space-lg);
+}
+
+/* wallet modal reuses #form-modal styles, needs its own sizing */
+#wallet-modal {
+  background: var(--color-panel);
+  border-radius: var(--radius);
+  width: 100%; max-width: 500px;
+  padding: var(--space-lg);
+  display: flex; flex-direction: column; gap: var(--space-md);
+}
+
+/* ----------------------------------------------------------------
+   LAPORAN TAB
+---------------------------------------------------------------- */
+#laporan-period-tabs {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.period-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: .95rem;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.period-tab.active {
+  background: var(--color-header);
+  color: #fff;
+  border-color: var(--color-header);
+}
+.period-tab:hover:not(.active) { background: var(--color-border); }
+.calendar-icon { font-size: .9rem; }
+
+.laporan-period-label {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.chart-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#pie-chart {
+  display: block;
+  max-width: 260px;
+  width: 100%;
+}
+
+.chart-empty-msg {
+  position: absolute;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: var(--space-md);
+}
+
+#category-legend {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#category-legend li {
+  background: var(--color-surface);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.legend-name { font-weight: 600; font-size: 1rem; }
+
+.legend-pct {
+  color: #fff;
+  font-weight: 700;
+  font-size: .9rem;
+  padding: 4px 12px;
+  border-radius: 6px;
+  min-width: 52px;
+  text-align: center;
+}
+
+/* ----------------------------------------------------------------
+   RIWAYAT TAB
+---------------------------------------------------------------- */
+.riwayat-search-wrap {
+  position: relative;
+  max-width: 400px;
+  margin-left: auto;
+}
+
+#riwayat-search {
+  width: 100%;
+  padding: 10px 40px 10px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+#riwayat-search:focus { outline: 2px solid var(--color-primary); }
+
+.search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+#riwayat-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* each date row */
+.riwayat-date-row {
+  background: var(--color-surface);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.riwayat-date-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+}
+.riwayat-date-trigger:hover { background: #f9fafb; }
+.riwayat-arrow { font-size: .85rem; color: var(--color-muted); }
+
+.riwayat-date-body {
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+.riwayat-date-body.hidden { display: none; }
+
+.riwayat-tx-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background .1s;
+}
+.riwayat-tx-row:last-child { border-bottom: none; }
+.riwayat-tx-row:hover { background: #f3f4f6; }
+
+.riwayat-tx-info { display: flex; flex-direction: column; gap: 2px; }
+.riwayat-tx-name { font-weight: 700; }
+.riwayat-tx-cat  { font-size: .82rem; color: var(--color-muted); }
+.riwayat-tx-amount { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+#riwayat-empty-state {
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 1rem;
+  padding: var(--space-lg);
+}
+
+/* ----------------------------------------------------------------
+   DETAIL MODAL (transaction detail from Riwayat)
+---------------------------------------------------------------- */
+#detail-modal {
+  background: var(--color-panel);
+  border-radius: var(--radius);
+  width: 100%; max-width: 500px;
+  padding: var(--space-lg);
+  display: flex; flex-direction: column; gap: var(--space-md);
+}
+
+.detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.detail-row {
+  background: var(--color-surface);
+  padding: 14px 16px;
+  font-size: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.detail-row:first-child { border-radius: 8px 8px 0 0; }
+.detail-row:last-child  { border-radius: 0 0 8px 8px; border-bottom: none; }
+.detail-row-single { border-radius: 8px !important; border-bottom: none !important; margin-bottom: 10px; }
+
+.detail-type-label {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.detail-type-icon {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 4px;
+}
+
+/* ----------------------------------------------------------------
+   PENGATURAN TAB
+---------------------------------------------------------------- */
+#tab-pengaturan {
+  gap: 0;
+}
+
+.setting-accordion {
+  background: var(--color-surface);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+}
+.accordion-trigger:hover { background: #f9fafb; }
+.accordion-arrow { font-size: .8rem; color: var(--color-muted); }
+
+.accordion-body {
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+.accordion-body.hidden { display: none; }
+
+.setting-row-btn {
+  width: 100%;
+  padding: 14px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+  transition: background .1s;
+}
+.setting-row-btn:last-child { border-bottom: none; }
+.setting-row-btn:hover { background: #f3f4f6; }
+
+.lang-btn.active-lang {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* ----------------------------------------------------------------
+   EXPORT MODAL
+---------------------------------------------------------------- */
+#export-modal {
+  background: var(--color-panel);
+  border-radius: var(--radius);
+  width: 100%; max-width: 360px;
+  padding: var(--space-lg);
+  display: flex; flex-direction: column; gap: var(--space-md);
+}
+
+.export-btns {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  padding: var(--space-md) 0;
+}
+
+.btn-export-pdf {
+  background: #38bdf8;
+  color: #fff; border: none; border-radius: 20px;
+  padding: 10px 28px; font-family: inherit;
+  font-size: 1rem; font-weight: 700; cursor: pointer;
+  transition: opacity .15s;
+}
+.btn-export-pdf:hover { opacity: .85; }
+
+.btn-export-excel {
+  background: #10b981;
+  color: #fff; border: none; border-radius: 20px;
+  padding: 10px 28px; font-family: inherit;
+  font-size: 1rem; font-weight: 700; cursor: pointer;
+  transition: opacity .15s;
+}
+.btn-export-excel:hover { opacity: .85; }
+
+/* ----------------------------------------------------------------
+   CONFIRM DIALOG
+---------------------------------------------------------------- */
+#confirm-dialog {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  width: 100%; max-width: 380px;
+  padding: var(--space-lg);
+  display: flex; flex-direction: column; gap: var(--space-lg);
+  text-align: center;
+}
+
+#confirm-message {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.confirm-btns {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+.btn-confirm-cancel {
+  padding: 10px 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  font-family: inherit; font-size: 1rem; font-weight: 600;
+  cursor: pointer;
+}
+.btn-confirm-cancel:hover { background: var(--color-bg); }
+
+.btn-confirm-ok {
+  padding: 10px 28px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-danger);
+  color: #fff;
+  font-family: inherit; font-size: 1rem; font-weight: 600;
+  cursor: pointer;
+}
+.btn-confirm-ok:hover { background: var(--color-danger-dark); }
+
+/* ----------------------------------------------------------------
+   RESPONSIVE additions
+---------------------------------------------------------------- */
+@media (max-width: 768px) {
+  #laporan-period-tabs { gap: 6px; }
+  .period-tab { padding: 8px 14px; font-size: .85rem; }
+  .riwayat-search-wrap { max-width: 100%; }
+}
+
+@media (max-width: 600px) {
+  .saldo-card { max-width: 100%; }
+  #laporan-period-tabs { justify-content: stretch; }
+  .period-tab { flex: 1; justify-content: center; }
+  #pie-chart { max-width: 200px; }
+}
